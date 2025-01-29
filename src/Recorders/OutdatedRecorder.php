@@ -36,8 +36,11 @@ class OutdatedRecorder
             return;
         }
 
-        $result = Process::run('composer outdated --no-dev -D -f json');
-
+        $composer = config('app.composer');
+        $devFlag = $this->option('dev') ? '' : '--no-dev';
+        // shell_exec('composer2 update');
+        $process = Process::fromShellCommandline("$composer outdated $devFlag -D -f json $devFlag", base_path(), ['COMPOSER_HOME' => '../../.cache/composer']);        
+        $result = $process->run();
         if ($result->failed()) {
             throw new RuntimeException('Composer outdated failed: ' . $result->errorOutput());
         }
