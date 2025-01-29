@@ -36,7 +36,7 @@ class OutdatedRecorder
             return;
         }
 
-        $result = Process::run('composer outdated -D -f json');
+        $result = Process::run('composer outdated --no-dev -D -f json');
 
         if ($result->failed()) {
             throw new RuntimeException('Composer outdated failed: ' . $result->errorOutput());
